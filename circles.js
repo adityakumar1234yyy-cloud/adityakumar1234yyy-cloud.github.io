@@ -7,24 +7,29 @@
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const fine = window.matchMedia('(pointer: fine)');
   let paused = reduced.matches;
-  let width = 0, height = 0, frame = 0, last = 0, circles = [];
+  let width = 0, height = 0, frame = 0, last = 0, circles = [], pulses = [], pulseCooldown = 0;
   const pointer = { x: -1000, y: -1000, active: false };
   function resize() {
     width = window.innerWidth; height = window.innerHeight;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = width < 700 ? 15 : 32;
+    const count = width < 700 ? 26 : 64;
     circles = Array.from({ length: count }, (_, i) => ({
       x: Math.random() * width, y: Math.random() * height,
-      r: 13 + Math.random() * (width < 700 ? 17 : 30),
+      r: 8 + Math.random() * (width < 700 ? 13 : 23),
       vx: (Math.random() - 0.5) * 1.2, vy: (Math.random() - 0.5) * 1.2,
-      tint: i % 3 === 0 ? '152,126,255' : '66,220,230'
+      tint: ['66,220,230', '152,126,255', '92,175,255'][i % 3]
     }));
+    pulses = []; pulseCooldown = 0;
     draw(0);
   }
   function draw(dt) {
     ctx.clearRect(0, 0, width, height);
+    // A faint arena grid stays behind the moving circles.
+    ctx.fillStyle = 'rgba(116,160,206,0.15)';
+    for (let x = 24; x < width; x += 48) for (let y = 24; y < height; y += 48) ctx.fillRect(x, y, 1, 1);
+    pulseCooldown = Math.max(0, pulseCooldown - dt);
     for (const c of circles) {
       if (dt) {
         if (pointer.active && fine.matches) {
@@ -53,6 +58,10 @@
         const nx = dx / distance, ny = dy / distance, overlap = (touch - distance) / 2;
         a.x -= nx * overlap; a.y -= ny * overlap; b.x += nx * overlap; b.y += ny * overlap;
         const approaching = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;
+        if (approaching > 1.8 && pulseCooldown === 0 && pulses.length < 10) {
+          pulses.push({ x: a.x + nx * a.r, y: a.y + ny * a.r, age: 0, tint: a.tint });
+          pulseCooldown = 9;
+        }
         if (approaching > 0) { a.vx -= approaching * nx; a.vy -= approaching * ny; b.vx += approaching * nx; b.vy += approaching * ny; }
       }
       if (distance < touch + 65) {
@@ -61,10 +70,20 @@
         ctx.lineWidth = 0.7; ctx.stroke();
       }
     }
+    for (const p of pulses) {
+      p.age += dt;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 5 + p.age * 0.8, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(${p.tint},${0.25 * Math.max(0, 1 - p.age / 32)})`;
+      ctx.lineWidth = 1; ctx.stroke();
+    }
+    pulses = pulses.filter(p => p.age < 32);
     for (const c of circles) {
+      // Wide translucent outline gives a glow without costly canvas blur.
+      ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(${c.tint},0.05)`; ctx.lineWidth = 6; ctx.stroke();
       ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${c.tint},0.025)`; ctx.fill();
-      ctx.strokeStyle = `rgba(${c.tint},0.24)`; ctx.lineWidth = 1; ctx.stroke();
+      ctx.strokeStyle = `rgba(${c.tint},0.34)`; ctx.lineWidth = 1; ctx.stroke();
     }
   }
   function tick(time) {
