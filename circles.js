@@ -14,7 +14,7 @@
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = width < 700 ? 26 : 64;
+    const count = width < 700 ? 26 : 252;
     circles = Array.from({ length: count }, (_, i) => ({
       x: Math.random() * width, y: Math.random() * height,
       r: 8 + Math.random() * (width < 700 ? 13 : 23),
