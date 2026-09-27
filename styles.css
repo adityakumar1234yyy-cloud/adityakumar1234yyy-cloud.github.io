@@ -7,3 +7,35 @@
 @media(max-width:900px){header{margin:12px 20px 0}.hero{gap:30px}.hero h1{font-size:55px}.hero-role{font-size:17px}.insight{padding:24px}.hero .eyebrow{font-size:10px}nav{gap:16px}.contact{padding:32px}}
 @media(max-width:650px){header{margin:10px 12px 0;padding:14px;align-items:center;gap:12px}nav{gap:12px;flex-wrap:wrap;justify-content:flex-end}nav a{font-size:12px}.nav-resume{padding:4px 7px}.hero{padding-top:48px;padding-bottom:40px;gap:35px}.hero h1{font-size:53px;letter-spacing:-2px}.hero-role{font-size:16px}.hero .eyebrow{font-size:10px;letter-spacing:.6px}.hero-label{font-size:10px}.tool-strip{padding:18px}.insight{padding:26px}.project-body{padding:24px}.contact{padding:25px 20px;margin-bottom:35px}.contact h2{font-size:38px}.contact-bottom{gap:17px}.email{font-size:15px}.skills{gap:14px;padding-top:25px}.about{padding-top:55px}.credentials{padding:23px}.section-title>p{padding:0}.motion-toggle{bottom:12px;right:12px}.project:hover{transform:none}}
 @media(prefers-reduced-motion:reduce){.project,.socials a{transition:none}.project:hover{transform:none}}
+
+/* Refined portfolio surfaces */
+:root{--line:#30415c;--muted:#b6c3d6}
+header{position:sticky;top:12px;z-index:4;box-shadow:0 12px 40px #0004}
+nav a{position:relative;transition:color .18s ease}
+nav a:not(.nav-resume):after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .18s ease}
+nav a:hover:after,nav a:focus-visible:after{transform:scaleX(1)}
+.hero{min-height:660px}.hero h1{font-weight:800;line-height:1.08}.hero .intro{max-width:530px}
+.button{transition:box-shadow .18s ease,border-color .18s ease,transform .18s ease}
+.button:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 8px 28px #57e2e71a}
+.hero .socials a{padding-bottom:4px;border-bottom:1px solid #455770}
+.tool-strip{background:linear-gradient(100deg,#12253ce8,#111b2de8);padding:22px 26px}.tool-strip b{font-size:15px;padding:5px 0}
+.section-title{padding-bottom:22px;border-bottom:1px solid var(--line)}
+.section-title h2{font-size:clamp(29px,3.3vw,42px);letter-spacing:-1.5px}
+.projects{counter-reset:project;gap:30px}.project{position:relative;counter-increment:project;box-shadow:0 8px 28px #0002}
+.project-body{position:relative;padding:30px}.project-body:before{content:"0" counter(project);position:absolute;right:26px;top:24px;color:#95adc8;font:14px/1.6 ui-monospace,monospace;letter-spacing:2px}
+.tags{padding-right:40px;min-height:28px}.tags span{font-size:12px;background:#172b40;color:#c6e2ed;border-color:#33516a}
+.project h3{font-size:25px;margin-top:22px;letter-spacing:-.7px}.project-body>p{line-height:1.8}
+.project-visual{border-bottom:1px solid #36516b;background-size:100% 100%}
+.bike{background:radial-gradient(ellipse at 100% 0,#24617070,transparent 70%),linear-gradient(120deg,#102e35,#122438)}
+.model{background:radial-gradient(ellipse at 100% 0,#7356bd55,transparent 70%),linear-gradient(120deg,#29213f,#14273c)}
+.dashboard-preview{margin:16px 16px 0;border:1px solid #4c657a;border-radius:9px;aspect-ratio:16/9}
+summary{font-weight:600}summary:hover{color:var(--accent)}
+.project-link{font-weight:600;border-bottom:1px solid #4a849455;padding-bottom:4px}
+.skills>div{position:relative;padding:28px;border-top:2px solid #55c6d1;background:linear-gradient(140deg,#14283bea,#10192bea)}
+.skills>div:nth-child(2){border-top-color:#8fa9ff}.skills>div:nth-child(3){border-top-color:#bc9aff}
+.skills h3{font-size:19px}.skills p{line-height:1.85;margin-bottom:0}
+.contact{position:relative;overflow:hidden;box-shadow:0 18px 70px #0003}.contact:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,#5ee4db,#8fa9ff,transparent)}
+.email:hover{border-color:var(--accent)}.eyebrow,.hero-label{font-size:12px}.motion-toggle{font-size:14px}
+@media(max-width:900px){.hero{min-height:0}.project-body{padding:25px}.project-body:before{right:20px}.tags{padding-right:32px}}
+@media(max-width:650px){header{position:relative;top:0}.hero h1{font-size:clamp(44px,11vw,60px)}nav a{font-size:14px}.hero .eyebrow{font-size:11px}.hero-label{font-size:12px}.project h3{font-size:23px}.project-body{padding:23px}.project-body:before{top:22px}.dashboard-preview{margin:12px 12px 0}.section-title h2{letter-spacing:-1px}.skills>div{padding:24px}.button:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){nav a,nav a:after,.button{transition:none}.button:hover{transform:none}}

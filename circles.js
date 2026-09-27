@@ -18,7 +18,7 @@
     circles = Array.from({ length: count }, (_, i) => ({
       x: Math.random() * width, y: Math.random() * height,
       r: 13 + Math.random() * (width < 700 ? 17 : 30),
-      vx: (Math.random() - 0.5) * 0.6, vy: (Math.random() - 0.5) * 0.6,
+      vx: (Math.random() - 0.5) * 1.2, vy: (Math.random() - 0.5) * 1.2,
       tint: i % 3 === 0 ? '152,126,255' : '66,220,230'
     }));
     draw(0);
@@ -30,14 +30,14 @@
         if (pointer.active && fine.matches) {
           const dx = pointer.x - c.x, dy = pointer.y - c.y;
           const distance = Math.hypot(dx, dy);
-          if (distance < 330 && distance > 1) {
-            c.vx += dx / distance * 0.075 * dt;
-            c.vy += dy / distance * 0.075 * dt;
+          if (distance < 520 && distance > 1) {
+            c.vx += dx / distance * 0.42 * dt;
+            c.vy += dy / distance * 0.42 * dt;
           }
         }
-        c.vx *= Math.pow(0.994, dt); c.vy *= Math.pow(0.994, dt);
+        c.vx *= Math.pow(pointer.active ? 0.96 : 0.992, dt); c.vy *= Math.pow(pointer.active ? 0.96 : 0.992, dt);
         const speed = Math.hypot(c.vx, c.vy);
-        if (speed > 2.3) { c.vx *= 2.3 / speed; c.vy *= 2.3 / speed; }
+        if (speed > 7) { c.vx *= 7 / speed; c.vy *= 7 / speed; }
         c.x += c.vx * dt; c.y += c.vy * dt;
         if (c.x < c.r) { c.x = c.r; c.vx = Math.abs(c.vx); }
         if (c.x > width - c.r) { c.x = width - c.r; c.vx = -Math.abs(c.vx); }
